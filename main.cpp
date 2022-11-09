@@ -38,9 +38,17 @@ int main()
   // animation frame
   int frame{};
 
+  // nebula animation variables
+  int nebFrame{};
+  const float nebUpdateTime{1.0/12.0};
+  float nebRunningTime{};
+
   // time before update animation frame
   const float updateTime{1.0/12.0};
   float runningTime{};
+  
+
+
 
   // Rectangle dimensions
   // const int width{50};
@@ -96,6 +104,7 @@ int main()
     // Rectangle shape to test before using sprites
     // DrawRectangle(windowWidth/2, posY, width, height, BLUE);
 
+    // update scarfy animation time
     if (!isInAir)
     {
       // update running time
@@ -110,6 +119,19 @@ int main()
         {
           frame = 0;
         }  
+      }
+    }
+
+    //update nebula animation frame
+    nebRunningTime += dT;
+    if (nebRunningTime >= nebUpdateTime)
+    {
+      nebRunningTime = 0.0;
+      nebRec.x = nebFrame * nebRec.width; // frame of the nebula * nebula width
+      nebFrame++; // iterate by adding 1
+      if (nebFrame  > 7) // up to 7 elements
+      {
+        nebFrame = 0;
       }
 
     }
