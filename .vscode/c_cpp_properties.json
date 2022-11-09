@@ -1,0 +1,27 @@
+{
+  "configurations": [
+      {
+          "name": "Mac",
+          "includePath": [
+              "${workspaceFolder}/**",
+              "/usr/local/Cellar/raylib"
+          ],
+          "defines": [
+              "_DEBUG",
+              "UNICODE",
+              "_UNICODE",
+              "GRAPHICS_API_OPENGL_33",
+              "PLATFORM_DESKTOP"
+          ],
+          "macFrameworkPath": [
+              "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.0.sdk/System/Library/Frameworks"
+          ],
+          "compilerPath": "/usr/bin/clang",
+          "cStandard": "c11",
+          "cppStandard": "c++14",
+          "intelliSenseMode": "clang-x64",
+          "configurationProvider": "ms-vscode.makefile-tools"
+      }
+  ],
+  "version": 4
+}
