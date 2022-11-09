@@ -33,4 +33,4 @@
 *.app
 *.dsym
 main
-*.main.code-workspace
+main.code-workspace
