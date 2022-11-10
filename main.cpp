@@ -12,10 +12,13 @@ struct AnimData // own member variables in body
 
 int main()
 {
+
+  int windowDimensions[2];
+  windowDimensions[0] = 512;
+  windowDimensions[1] = 380;
+
   // screen
-  const int windowWidth{512};
-  const int windowHeight{380};
-  InitWindow(windowWidth, windowHeight, "Dapper Dash");
+  InitWindow(windowDimensions[0], windowDimensions[1], "Dapper Dash");
 
   // acceleration due to gravity (pixel/second)/s
   const int gravity{1'000};
@@ -28,8 +31,8 @@ int main()
   scarfyData.rec.height = scarfy.height;
   scarfyData.rec.x = 0;
   scarfyData.rec.y = 0;
-  scarfyData.pos.x = windowWidth/2 - scarfyData.rec.width/2;
-  scarfyData.pos.y = windowHeight - scarfyData.rec.height;
+  scarfyData.pos.x = windowDimensions[0]/2 - scarfyData.rec.width/2;
+  scarfyData.pos.y = windowDimensions[1] - scarfyData.rec.height;
   scarfyData.frame = 0;
   scarfyData.updateTime = 1.0/12.0;
   scarfyData.runningTime = 0.0;
@@ -46,8 +49,8 @@ int main()
   nebData.rec.height = nebula.height/8;
   nebData.rec.x = 0.0;
   nebData.rec.y = 0.0;
-  nebData.pos.x = windowWidth; 
-  nebData.pos.y = windowHeight - nebData.rec.height; // nebRec.height puts the nebula on the ground position
+  nebData.pos.x = windowDimensions[0]; 
+  nebData.pos.y = windowDimensions[1] - nebData.rec.height; // nebRec.height puts the nebula on the ground position
   nebData.frame = 0;
   nebData.updateTime = 1.0/16.0;
   nebData.runningTime = 0.0;
@@ -59,8 +62,8 @@ int main()
   nebData2.rec.height = nebula.height/8;
   nebData2.rec.x = 0.0;
   nebData2.rec.y = 0.0;
-  nebData2.pos.x = windowWidth + 300; 
-  nebData2.pos.y = windowHeight - nebData2.rec.height; // nebRec.height puts the nebula on the ground position
+  nebData2.pos.x = windowDimensions[0] + 300; 
+  nebData2.pos.y = windowDimensions[1] - nebData2.rec.height; // nebRec.height puts the nebula on the ground position
   nebData2.frame = 0;
   nebData2.updateTime = 1.0/16.0;
   nebData2.runningTime = 0.0; 
@@ -89,7 +92,7 @@ int main()
     // game logic
 
     // perform ground check
-    if (scarfyData.pos.y >= windowHeight - scarfyData.rec.height) // if rectangle position is greater or equals to 380 - 80
+    if (scarfyData.pos.y >= windowDimensions[0] - scarfyData.rec.height) // if rectangle position is greater or equals to 380 - 80
     {
       // rectangle is on the ground
       velocity = 0;
