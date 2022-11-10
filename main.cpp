@@ -88,13 +88,17 @@ int main()
   // nebula X velocity (pixels/second)
   int nebVel{-600};
 
-  // int posY{windowHeight - height};
-  int velocity{};
 
   // is rectangle in air
-  bool isInAir{false};
+  bool isInAir{};
   // jump velocity (pixel/second)
   const int jumpVal{-600};
+  // int posY{windowHeight - height};
+  int velocity{0};
+
+  Texture2D background = LoadTexture("textures/far-buildings.png");
+  float bgX{};
+
 
   SetTargetFPS(60);
   while (!WindowShouldClose())
@@ -106,6 +110,12 @@ int main()
     // Start drawing
     BeginDrawing();
     ClearBackground(WHITE);
+
+    bgX -= 20 * dT;
+
+    Vector2 bgPos{bgX, 0.0};
+    DrawTextureEx(background, bgPos, 0.0, 2.0, WHITE);
+
 
 
     // perform ground check
@@ -171,6 +181,7 @@ int main()
   // teardown
   UnloadTexture(scarfy);
   UnloadTexture(nebula);
+  UnloadTexture(background);
   CloseWindow();
   
 }
