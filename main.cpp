@@ -9,6 +9,10 @@ struct AnimData // own member variables in body
   float runningTime;
 };
 
+bool isOnGround(AnimData data, int windowHeight)
+{
+  return data.pos.y >= windowHeight - data.rec.height;
+}
 
 int main()
 {
@@ -86,10 +90,9 @@ int main()
     BeginDrawing();
     ClearBackground(WHITE);
 
-    // game logic
 
     // perform ground check
-    if (scarfyData.pos.y >= windowDimensions[1] - scarfyData.rec.height) // if rectangle position is greater or equals to 380 - 80
+    if (isOnGround(scarfyData, windowDimensions[1])) // if rectangle position is greater or equals to 380 - 80
     {
       // rectangle is on the ground
       velocity = 0;
