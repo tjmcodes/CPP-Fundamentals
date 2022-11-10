@@ -36,40 +36,33 @@ int main()
   scarfyData.frame = 0;
   scarfyData.updateTime = 1.0/12.0;
   scarfyData.runningTime = 0.0;
-
-
-  
   
   // nebular variables
   Texture2D nebula = LoadTexture("textures/12_nebula_spritesheet.png");
 
   // AnimData for nebula - initialization of AnimData members
-  AnimData nebData;
-  nebData.rec.width = nebula.width/8;
-  nebData.rec.height = nebula.height/8;
-  nebData.rec.x = 0.0;
-  nebData.rec.y = 0.0;
-  nebData.pos.x = windowDimensions[0]; 
-  nebData.pos.y = windowDimensions[1] - nebData.rec.height; // nebRec.height puts the nebula on the ground position
-  nebData.frame = 0;
-  nebData.updateTime = 1.0/16.0;
-  nebData.runningTime = 0.0;
-
-
-  // AnimData for nebula - initialization of AnimData members
-  AnimData nebData2;
-  nebData2.rec.width = nebula.width/8;
-  nebData2.rec.height = nebula.height/8;
-  nebData2.rec.x = 0.0;
-  nebData2.rec.y = 0.0;
-  nebData2.pos.x = windowDimensions[0] + 300; 
-  nebData2.pos.y = windowDimensions[1] - nebData2.rec.height; // nebRec.height puts the nebula on the ground position
-  nebData2.frame = 0;
-  nebData2.updateTime = 1.0/16.0;
-  nebData2.runningTime = 0.0; 
-
-  AnimData nebulae[2]{ nebData, nebData2 }; // each element will be intializes each values to 0 (copies the data in to the array element)
+  const int sizeOfNebulae{6}; // how many in array
+  AnimData nebulae[sizeOfNebulae]{}; // each element will be intializes each values to 0 (copies the data in to the array element)
   
+  for (int i = 0; i < sizeOfNebulae; i++)
+  {
+    nebulae[i].rec.x = 0.0;
+    nebulae[i].rec.y = 0.0;
+    nebulae[i].rec.width = nebula.width/8;
+    nebulae[i].rec.height = nebula.height/8;
+    nebulae[i].pos.y = windowDimensions[1] - nebula.height/8;
+    nebulae[i].frame = 0;
+    nebulae[i].updateTime = 0.0;
+    nebulae[i].runningTime = 0.0;  
+    nebulae[i].pos.x = windowDimensions[0] + i * 300; // i times 300, it starts with 0 so therefore doesn't add 300 
+  }
+
+  //! manually initialized the these elements variables as they are different (this has been replaced by one line of code: 57)
+  // nebulae[1].pos.x = windowDimensions[0] + 300;
+  // nebulae[2].pos.x = windowDimensions[0] + 600;
+  // nebulae[3].pos.x = windowDimensions[0] + 900;
+  // nebulae[4].pos.x = windowDimensions[0] + 1200;
+  // nebulae[5].pos.x = windowDimensions[0] + 1500;
 
   // nebula X velocity (pixels/second)
   int nebVel{-600};
@@ -114,11 +107,13 @@ int main()
     {
       velocity += jumpVal; // previuously this was hard-coded 'velocity -= 10'
     }
-    // update nebula position
-    nebulae[0].pos.x += nebVel * dT;
-    
-    // update nebula 2 position
-    nebulae[1].pos.x += nebVel * dT;
+
+    // update nebula position using for loop
+    for (int i = 0; i < sizeOfNebulae; i++)
+    {
+      // updates the position of EACH nebula
+      nebulae[i].pos.x += nebVel * dT;
+    }
 
     // update position 
     scarfyData.pos.y += velocity * dT;
@@ -145,39 +140,27 @@ int main()
       }
     }
 
-    //update nebula animation frame
-    nebulae[0].runningTime += dT;
-    if (nebulae[0].runningTime >= nebulae[0].updateTime)
+    //update nebula animation frame using for loop
+    for (int i = 0; i < sizeOfNebulae; i++)
     {
-      nebulae[0].runningTime = 0.0;
-      nebulae[0].rec.x = nebulae[0].frame * nebulae[0].rec.width; // frame of the nebula * nebula width
-      nebulae[0].frame++; // iterate by adding 1
-      if (nebulae[0].frame  > 7) // up to 7 elements
+      nebulae[i].runningTime += dT;
+      if (nebulae[i].runningTime >= nebulae[i].updateTime)
       {
-        nebulae[0].frame = 0;
+        nebulae[i].runningTime = 0.0;
+        nebulae[i].rec.x = nebulae[i].frame * nebulae[i].rec.width; // frame of the nebula * nebula width
+        nebulae[i].frame++; // iterate by adding 1
+        if (nebulae[i].frame  > 7) // up to 7 elements
+        {
+          nebulae[0].frame = 0;
+        }
       }
-
     }
 
-    //update nebula 2 animation frame
-    nebulae[1].runningTime += dT;
-    if (nebulae[1].runningTime >= nebulae[1].updateTime)
+    // Draw Nebulaes using for loop
+    for (int i = 0; i < sizeOfNebulae; i++)
     {
-      nebulae[1].runningTime = 0.0;
-      nebulae[1].rec.x = nebulae[1].frame * nebulae[1].rec.width; // frame of the nebula * nebula width
-      nebulae[1].frame++; // iterate by adding 1
-      if (nebulae[1].frame  > 7) // up to 7 elements
-      {
-        nebulae[1].frame = 0;
-      }
-
+      DrawTextureRec(nebula, nebulae[i].rec, nebulae[i].pos, WHITE);
     }
-
-    // Draw Nebula
-    DrawTextureRec(nebula, nebulae[0].rec, nebulae[0].pos, WHITE);
-    
-    // Draw Nebula 2
-    DrawTextureRec(nebula, nebulae[1].rec, nebulae[1].pos, RED);
 
     // Draw scarfy
     DrawTextureRec(scarfy, scarfyData.rec, scarfyData.pos, WHITE);
