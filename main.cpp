@@ -81,7 +81,7 @@ int main()
   float finishLine{ nebulae[sizeOfNebulae - 1].pos.x };
 
   // nebula X velocity (pixels/second)
-  int nebVel{-600};
+  int nebVel{-200};
 
 
   // is rectangle in air
@@ -135,7 +135,7 @@ int main()
     // checks if bgX is less than or equal to (negative) background width*2 - as soon as this is reached it resets to 0.0
     if (fgX <= -foreground.width*2)
     {
-      bgX = 0.0;
+      fgX = 0.0;
     }
 
     // draw the background
@@ -232,7 +232,11 @@ int main()
 
     if (collision)
     {
-       // lose game
+      DrawText("Game Over!", windowDimensions[0]/2, windowDimensions[1]/2, 20, RED);
+    }
+    else if (scarfyData.pos.x >= finishLine) // if scarfy's position is greater than the finish line, you win
+    {
+      DrawText("You Win!", windowDimensions[0]/2, windowDimensions[1]/2, 20, RED);
     }
     else
     {
