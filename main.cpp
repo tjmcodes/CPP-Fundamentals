@@ -78,12 +78,7 @@ int main()
     nebulae[i].pos.x = windowDimensions[0] + i * 300; // i times 300, it starts with 0 so therefore doesn't add 300 
   }
 
-  //! manually initialized the these elements variables as they are different (this has been replaced by one line of code: 57)
-  // nebulae[1].pos.x = windowDimensions[0] + 300;
-  // nebulae[2].pos.x = windowDimensions[0] + 600;
-  // nebulae[3].pos.x = windowDimensions[0] + 900;
-  // nebulae[4].pos.x = windowDimensions[0] + 1200;
-  // nebulae[5].pos.x = windowDimensions[0] + 1500;
+  float finishLine{ nebulae[sizeOfNebulae - 1].pos.x };
 
   // nebula X velocity (pixels/second)
   int nebVel{-600};
@@ -104,6 +99,8 @@ int main()
 
   Texture2D foreground = LoadTexture("textures/foreground.png");
   float fgX{};
+
+  bool collision{};
 
 
   SetTargetFPS(60);
@@ -163,7 +160,6 @@ int main()
     DrawTextureEx(foreground, fg2Pos, 0.0, 2.0 , WHITE);
 
 
-
     // perform ground check
     if (isOnGround(scarfyData, windowDimensions[1])) // if rectangle position is greater or equals to 380 - 80
     {
@@ -191,12 +187,12 @@ int main()
       nebulae[i].pos.x += nebVel * dT;
     }
 
+    // update finishLine
+    finishLine += nebVel * dT;
+
     // update position 
     scarfyData.pos.y += velocity * dT;
 
-    
-    // Rectangle shape to test before using sprites
-    // DrawRectangle(windowWidth/2, posY, width, height, BLUE);
 
     // update scarfy animation time
     if (!isInAir)
@@ -211,15 +207,44 @@ int main()
       nebulae[i] = updateAnimData(nebulae[i], dT, 7);
     }
 
-    // Draw Nebulaes using for loop
-    for (int i = 0; i < sizeOfNebulae; i++)
+    
+    for (AnimData nebula : nebulae)
     {
-      DrawTextureRec(nebula, nebulae[i].rec, nebulae[i].pos, WHITE);
+      float pad{50}; // to make the rectangle smaller so that it does not include the white area of the frame
+      Rectangle nebRec{
+        nebula.pos.x + pad,
+        nebula.pos.y + pad, 
+        nebula.rec.width - 2*pad, 
+        nebula.rec.height - 2*pad 
+      };
+      Rectangle scarfyRec{
+        scarfyData.pos.x,
+        scarfyData.pos.y,
+        scarfyData.rec.width,
+        scarfyData.rec.height
+      };
+      if (CheckCollisionRecs(nebRec, scarfyRec))
+      {
+        collision = true;
+      }
+      
     }
 
-    // Draw scarfy
-    DrawTextureRec(scarfy, scarfyData.rec, scarfyData.pos, WHITE);
-
+    if (collision)
+    {
+       // lose game
+    }
+    else
+    {
+      // Draw Nebulaes using for loop
+      for (int i = 0; i < sizeOfNebulae; i++)
+      {
+        DrawTextureRec(nebula, nebulae[i].rec, nebulae[i].pos, WHITE);
+      }
+  
+      // Draw scarfy
+      DrawTextureRec(scarfy, scarfyData.rec, scarfyData.pos, WHITE);
+    }
 
     // Stop drawing
     EndDrawing();
