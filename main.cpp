@@ -1,5 +1,7 @@
 #include "raylib.h"
 
+
+
 int main()
 {
   // screen
@@ -10,19 +12,6 @@ int main()
   // acceleration due to gravity (pixel/second)/s
   const int gravity{1'000};
   
-  // nebular variables
-  Texture2D nebula = LoadTexture("textures/12_nebula_spritesheet.png");
-  Rectangle nebRec;
-  nebRec.width = nebula.width/8;
-  nebRec.height = nebula.height/8;
-  nebRec.x = 0.0;
-  nebRec.y = 0.0;
-  Vector2 nebPos{windowWidth, windowHeight - nebRec.height}; // nebRec.height puts the nebula on the ground position
-  
-  // nebula X velocity (pixels/second)
-  int nebVel{-600};
-
-
   // scarfy variables
   // texture 2D, Rectangle and Vector2 (compound data types that comes with Raylib functions)
   Texture2D scarfy = LoadTexture("textures/scarfy.png"); // initialized - pointing to source file
@@ -34,14 +23,40 @@ int main()
   Vector2 scarfyPos;
   scarfyPos.x = windowWidth/2 - scarfyRec.width/2;
   scarfyPos.y = windowHeight - scarfyRec.height;
+  
+  // nebular variables
+  Texture2D nebula = LoadTexture("textures/12_nebula_spritesheet.png");
+  Rectangle nebRec;
+  nebRec.width = nebula.width/8;
+  nebRec.height = nebula.height/8;
+  nebRec.x = 0.0;
+  nebRec.y = 0.0;
+  Vector2 nebPos{windowWidth, windowHeight - nebRec.height}; // nebRec.height puts the nebula on the ground position
+  
+  Rectangle nebRec2;
+  nebRec2.width = nebula.width/8;
+  nebRec2.height = nebula.height/8;
+  nebRec2.x = 0.0;
+  nebRec2.y = 0.0;
+  Vector2 nebPos2{windowWidth + 300, windowHeight - nebRec.height}; // nebRec.height puts the nebula on the ground position
+
+  // nebula X velocity (pixels/second)
+  int nebVel{-600};
+
+
+  
 
   // animation frame
   int frame{};
 
   // nebula animation variables
   int nebFrame{};
-  const float nebUpdateTime{1.0/12.0};
+  const float nebUpdateTime{1.0/16.0};
   float nebRunningTime{};
+
+  int neb2Frame{};
+  const float neb2UpdateTime{1.0/16.0};
+  float neb2RunningTime{};
 
   // time before update animation frame
   const float updateTime{1.0/12.0};
@@ -96,6 +111,9 @@ int main()
     }
     // update nebula position
     nebPos.x += nebVel * dT;
+    
+    // update nebula 2 position
+    nebPos2.x += nebVel * dT;
 
     // update position 
     scarfyPos.y += velocity * dT;
@@ -136,8 +154,25 @@ int main()
 
     }
 
+    //update nebula 2 animation frame
+    neb2RunningTime += dT;
+    if (neb2RunningTime >= neb2UpdateTime)
+    {
+      neb2RunningTime = 0.0;
+      nebRec2.x = neb2Frame * nebRec2.width; // frame of the nebula * nebula width
+      neb2Frame++; // iterate by adding 1
+      if (neb2Frame  > 7) // up to 7 elements
+      {
+        neb2Frame = 0;
+      }
+
+    }
+
     // Draw Nebula
     DrawTextureRec(nebula, nebRec, nebPos, WHITE);
+    
+    // Draw Nebula 2
+    DrawTextureRec(nebula, nebRec2, nebPos2, RED);
 
     // Draw scarfy
     DrawTextureRec(scarfy, scarfyRec, scarfyPos, WHITE);
