@@ -1,5 +1,13 @@
 #include "raylib.h"
 
+struct AnimData // own member variables in body
+{
+  Rectangle rec;
+  Vector2 pos;
+  int frame;
+  float updateTime;
+  float runningTime;
+};
 
 
 int main()
@@ -15,6 +23,18 @@ int main()
   // scarfy variables
   // texture 2D, Rectangle and Vector2 (compound data types that comes with Raylib functions)
   Texture2D scarfy = LoadTexture("textures/scarfy.png"); // initialized - pointing to source file
+  AnimData scarfyData; // ititialized AnimData members with values:
+  scarfyData.rec.width = scarfy.width/6;
+  scarfyData.rec.height = scarfy.height;
+  scarfyData.rec.x = 0;
+  scarfyData.rec.y = 0;
+  scarfyData.pos.x = windowWidth/2 - scarfyData.rec.width/2;
+  scarfyData.pos.y = windowHeight - scarfyData.rec.height;
+  scarfyData.frame = 0;
+  scarfyData.updateTime = 1.0/12.0;
+  scarfyData.runningTime = 0.0;
+
+
   Rectangle scarfyRec;
   scarfyRec.width = scarfy.width/6;
   scarfyRec.height = scarfy.height;
@@ -26,6 +46,25 @@ int main()
   
   // nebular variables
   Texture2D nebula = LoadTexture("textures/12_nebula_spritesheet.png");
+
+  // AnimData for nebula - initialization of AnimData members
+  AnimData nebData{ 
+    {0.0, 0.0, nebula.width/8, nebula.height/8}, // Rectangle rec
+    {windowWidth, windowHeight - nebula.height/8}, // Vector2 pos
+    0, // int frame
+    1.0/12.0, // float updateTime
+    0 //float runningTime
+  };
+
+  // AnimData for nebula - initialization of AnimData members
+  AnimData nebData2{ 
+    {0.0, 0.0, nebula.width/8, nebula.height/8}, // Rectangle rec
+    {windowWidth + 300, windowHeight - nebula.height/8}, // Vector2 pos
+    0, // int frame
+    1.0/12.0, // float updateTime
+    0 //float runningTime
+  };
+
   Rectangle nebRec;
   nebRec.width = nebula.width/8;
   nebRec.height = nebula.height/8;
