@@ -67,6 +67,10 @@ int main()
   nebData2.frame = 0;
   nebData2.updateTime = 1.0/16.0;
   nebData2.runningTime = 0.0; 
+
+  AnimData nebulae[2]{ nebData, nebData2 }; // each element will be intializes each values to 0 (copies the data in to the array element)
+  
+
   // nebula X velocity (pixels/second)
   int nebVel{-600};
 
@@ -92,7 +96,7 @@ int main()
     // game logic
 
     // perform ground check
-    if (scarfyData.pos.y >= windowDimensions[0] - scarfyData.rec.height) // if rectangle position is greater or equals to 380 - 80
+    if (scarfyData.pos.y >= windowDimensions[1] - scarfyData.rec.height) // if rectangle position is greater or equals to 380 - 80
     {
       // rectangle is on the ground
       velocity = 0;
@@ -111,10 +115,10 @@ int main()
       velocity += jumpVal; // previuously this was hard-coded 'velocity -= 10'
     }
     // update nebula position
-    nebData.pos.x += nebVel * dT;
+    nebulae[0].pos.x += nebVel * dT;
     
     // update nebula 2 position
-    nebData2.pos.x += nebVel * dT;
+    nebulae[1].pos.x += nebVel * dT;
 
     // update position 
     scarfyData.pos.y += velocity * dT;
@@ -142,38 +146,38 @@ int main()
     }
 
     //update nebula animation frame
-    nebData.runningTime += dT;
-    if (nebData.runningTime >= nebData.updateTime)
+    nebulae[0].runningTime += dT;
+    if (nebulae[0].runningTime >= nebulae[0].updateTime)
     {
-      nebData.runningTime = 0.0;
-      nebData.rec.x = nebData.frame * nebData.rec.width; // frame of the nebula * nebula width
-      nebData.frame++; // iterate by adding 1
-      if (nebData.frame  > 7) // up to 7 elements
+      nebulae[0].runningTime = 0.0;
+      nebulae[0].rec.x = nebulae[0].frame * nebulae[0].rec.width; // frame of the nebula * nebula width
+      nebulae[0].frame++; // iterate by adding 1
+      if (nebulae[0].frame  > 7) // up to 7 elements
       {
-        nebData.frame = 0;
+        nebulae[0].frame = 0;
       }
 
     }
 
     //update nebula 2 animation frame
-    nebData2.runningTime += dT;
-    if (nebData2.runningTime >= nebData2.updateTime)
+    nebulae[1].runningTime += dT;
+    if (nebulae[1].runningTime >= nebulae[1].updateTime)
     {
-      nebData2.runningTime = 0.0;
-      nebData2.rec.x = nebData2.frame * nebData2.rec.width; // frame of the nebula * nebula width
-      nebData2.frame++; // iterate by adding 1
-      if (nebData2.frame  > 7) // up to 7 elements
+      nebulae[1].runningTime = 0.0;
+      nebulae[1].rec.x = nebulae[1].frame * nebulae[1].rec.width; // frame of the nebula * nebula width
+      nebulae[1].frame++; // iterate by adding 1
+      if (nebulae[1].frame  > 7) // up to 7 elements
       {
-        nebData2.frame = 0;
+        nebulae[1].frame = 0;
       }
 
     }
 
     // Draw Nebula
-    DrawTextureRec(nebula, nebData.rec, nebData.pos, WHITE);
+    DrawTextureRec(nebula, nebulae[0].rec, nebulae[0].pos, WHITE);
     
     // Draw Nebula 2
-    DrawTextureRec(nebula, nebData2.rec, nebData2.pos, RED);
+    DrawTextureRec(nebula, nebulae[1].rec, nebulae[1].pos, RED);
 
     // Draw scarfy
     DrawTextureRec(scarfy, scarfyData.rec, scarfyData.pos, WHITE);
